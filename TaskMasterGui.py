@@ -45,6 +45,16 @@ class ScrollList(ttk.Frame):
     def _on_canvas_configure(self, event):
         self.canvas.itemconfigure(self.window_id, width=event.width)
 
+class Projects_Panel(ttk.Frame):
+    def __init__(self, parent, projects_data):
+        super().__init__(parent)
+        #self.frame = tk.Frame(self)
+        self.label = tk.Label(self, text="Projects")
+        self.label.pack()
+        for project in projects_data:
+            self.proj_button = tk.Button(self, text=project["name"])
+            self.proj_button.pack()
+
 
 class App(tk.Tk):
     # TODO: consider picking a ttk style
@@ -56,6 +66,19 @@ class App(tk.Tk):
         with open("project_data.json", 'r') as project_data_file:
             self.data = json.load(project_data_file)
         # TODO: make a top menu like this [<][Pull down menu for projects][>]
+        self.proj_sel_panel = Projects_Panel(self, self.data)
+        self.proj_sel_panel.grid(row=1, column =1)
+        func = lambda : self.show_project("debug")
+        #self.test_button = tk.Button(text="press", command= lambda proj_name="proj1": self.show_project)
+        self.test_button = tk.Button(text="press", command= func)
+        self.test_button.grid(row=1, column=2)
+        #self.main_frame = tk.Frame()
+
+        # make the project select panel
+
+
+    def show_project(self, project_name):
+
 
         # make the scroll list that the rows will go on
         self.list_widget = ScrollList(self)
